@@ -165,12 +165,10 @@ public class CalendarMain {
 
 			System.out.println("The number of appointments between "+ dateFormat.format(today.getTime()) +" (inclusive) and " + dateFormat.format(tomorrow.getTime()) +  " (exclusive) ");
 			for (int i = 0; i < calDays.size(); i++){
-				
 				CalDay calday= calDays.get(i);
 				
 				String str= calday.getFullInfomrationApp(calday);
 				System.out.println(str);
-
 				LinkedList<Appt>  appts =calDays.get(i).getAppts();
 				for(int index=0; index < appts.size();index++){
 					Appt appt_=appts.get(index);

@@ -179,8 +179,7 @@ public class Appt{
 			int NumDaysInMonth = CalendarUtil.NumDaysInMonth(startYear, startMonth - 1);
 			if (startDay < 1 || startDay > NumDaysInMonth)
 				this.valid = false;
-			else
-				this.valid = true;
+			this.valid = true;
 		}
 	}
     
@@ -303,13 +302,13 @@ public class Appt{
         setRecurNumber(recurNumber);
     }
     private void setRecurDays(int[] recurDays) {
-        if (recurDays == null) {
+        //if (recurDays == null) {
             this.recurDays = new int[0];
-        }
-        else {
+        //}
+        //else {
             this.recurDays = recurDays;
         }
-    }
+    //}
     /** Sets recurBy */
     private void setRecurBy(int recurBy) {
         this.recurBy = recurBy;
@@ -359,7 +358,7 @@ public class Appt{
     private String represntationApp(){
         String half = (getStartHour() > 11) ? "pm" : "am";
         int printableHour = getStartHour();
-        if (printableHour > 11)
+        if (printableHour > 12)
         {
             printableHour -= 12;
         }

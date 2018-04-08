@@ -238,7 +238,7 @@ public class CalDay {
 				
 				//add preceding zero to minutes less than 10
 				minute = appointment.getStartMinute();
-				if(minute < 10){
+				if(minute == 10){
 					minString = new String("0" + Integer.toString(minute));
 				}
 				else{

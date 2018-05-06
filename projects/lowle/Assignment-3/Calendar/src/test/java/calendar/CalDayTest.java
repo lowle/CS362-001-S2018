@@ -88,7 +88,7 @@ public class CalDayTest {
 	}
 	
 	@Test(timeout = 4000)
-	public void testFullInfoApp() throws Throwable {
+	public void testFullInfoAppCoverage() throws Throwable {
 		
 		CalDay c0 = new CalDay(new GregorianCalendar(2018, 4, 16));
 		
@@ -109,13 +109,48 @@ public class CalDayTest {
 		c0.addAppt(ap4);
 		
 		System.out.println(c0.getFullInfomrationApp(c0));
-		/*
+		
 		assertEquals("5-16-2018 \n" + 
 				"	Birthday Whole Day \n" + 
-				"	12:10AM Dinner Sandwiches \n" + 
-				"	6:09AM Dinner Sandwiches \n" + 
+				"	12:010AM Dinner Sandwiches \n" + 
+				"	6:9AM Dinner Sandwiches \n" + 
 				"	3:30PM Birthday Party This is my birthday party ", c0.getFullInfomrationApp(c0));
-				*/
+				
 	}
-
+	
+	@Test(timeout = 4000)
+	public void testFullInfoAppCoverage2() throws Throwable {
+		
+		CalDay c0 = new CalDay(new GregorianCalendar(2018, 4, 16));
+		
+		Appt ap1 = new Appt(15, 30, 14, 9, 2018, "Birthday Party", "This is my birthday party", "xyz@gmail.com");
+		ap1.setValid();
+		c0.addAppt(ap1);
+		
+		Appt ap5 = new Appt(15, 30, 14, 9, 2018, "Birthday Party 2", "This is my birthday party", "xyz@gmail.com");
+		ap5.setValid();
+		c0.addAppt(ap5);
+		
+		Appt ap2 = new Appt(06, 9, 14, 9, 2018, "Dinner", "Sandwiches", "xyz@gmail.com");
+		ap2.setValid();
+		c0.addAppt(ap2);
+		
+		Appt ap3 = new Appt(12, 10, 14, 9, 2018, "Dinner", "Sandwiches", "xyz@gmail.com");
+		ap3.setValid();
+		c0.addAppt(ap3);
+		
+		Appt ap4 = new Appt(1,1, 2018, "Birthday", "Whole Day", "xyz@gmail.com");
+		System.out.println(ap4.getValid());
+		c0.addAppt(ap4);
+		
+		System.out.println(c0.getFullInfomrationApp(c0));
+		
+		assertEquals("5-16-2018 \n" + 
+				"	Birthday Whole Day \n" + 
+				"	6:9AM Dinner Sandwiches \n" + 
+				"	0:010AM Dinner Sandwiches \n" + 
+				"	3:30PM Birthday Party This is my birthday party \n" +
+				"	3:30PM Birthday Party 2 This is my birthday party ", c0.getFullInfomrationApp(c0));
+				
+	}
 }

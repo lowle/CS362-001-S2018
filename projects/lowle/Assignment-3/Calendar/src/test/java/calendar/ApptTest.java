@@ -200,5 +200,60 @@ public class ApptTest {
 		assertTrue(appt0.isRecurring());
 		Appt appt1 = new Appt(31, 12, 2018, "Birthday Party", "This is my birthday party", "xyz@gmail.com");
 		assertFalse(appt1.isRecurring());
+		assertEquals(appt0.getRecurIncrement(), -1);
 	}
+	
+	@Test(timeout = 4000)
+	public void testApptBoundary() throws Throwable {
+		Appt appt0 = new Appt(0, 0, 1, 1, 2018, "Birthday Party", "This is my birthday party", "xyz@gmail.com");
+		appt0.setValid();
+		assertTrue(appt0.getValid());
+	}
+	
+	@Test(timeout = 4000)
+	public void testApptBoundary2() throws Throwable {
+		Appt appt0 = new Appt(23, 59, 31, 12, 1, "Birthday Party", "This is my birthday party", "xyz@gmail.com");
+		appt0.setValid();
+		assertTrue(appt0.hasTimeSet());
+		assertTrue(appt0.getValid());
+	}
+	
+	@Test(timeout = 4000)
+	public void testApptBoundary3() throws Throwable {
+		Appt appt0 = new Appt(23, 59, 31, 12, 0, "Birthday Party", "This is my birthday party", "xyz@gmail.com");
+		appt0.setValid();
+		assertTrue(appt0.hasTimeSet());
+		assertFalse(appt0.getValid());
+	}
+	
+	@Test(timeout = 4000)
+	public void testTimeSet2() throws Throwable {
+		Appt appt0 = new Appt(31, 12, 0, "Birthday Party", "This is my birthday party", "xyz@gmail.com");
+		appt0.setValid();
+		assertFalse(appt0.hasTimeSet());
+	}
+	
+	@Test(timeout = 4000)
+	public void testTimePM() throws Throwable {
+		Appt appt0 = new Appt(12, 30, 9, 14, 2018, "Birthday Party", "This is my birthday party", "xyz@gmail.com");
+		String string0 = appt0.toString();
+		assertEquals(2, appt0.getRecurBy());
+		assertFalse(appt0.isRecurring());
+		assertEquals("\t14/9/2018 at 12:30pm ,Birthday Party, This is my birthday party\n", string0);
+		assertEquals(0, appt0.getRecurIncrement());
+		appt0.setValid();
+	}
+	
+	@Test(timeout = 4000)
+	public void testTimePM2() throws Throwable {
+		Appt appt0 = new Appt(11, 30, 9, 14, 2018, "Birthday Party", "This is my birthday party", "xyz@gmail.com");
+		String string0 = appt0.toString();
+		assertEquals(2, appt0.getRecurBy());
+		assertFalse(appt0.isRecurring());
+		assertEquals("\t14/9/2018 at 11:30am ,Birthday Party, This is my birthday party\n", string0);
+		assertEquals(0, appt0.getRecurIncrement());
+		appt0.setValid();
+	}
+	
+	
 }

@@ -5,7 +5,10 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 
 /**
  * Random Test Generator for CalDay class.
@@ -48,6 +51,8 @@ public class CalDayRandomTest {
 		long elapsed = Calendar.getInstance().getTimeInMillis() - startTime;
 
 		System.out.println("Start testing...");
+		
+		
 
 		try {
 			for (int iteration = 0; elapsed < TestTimeout; iteration++) {
@@ -56,13 +61,32 @@ public class CalDayRandomTest {
 				// System.out.println(" Seed:"+randomseed );
 				Random random = new Random(randomseed);
 				
-				Appt appt = getRandomAppointment(random);
+				int day = ValuesGenerator.getRandomIntBetween(random, 0, 31);
+				int month = ValuesGenerator.getRandomIntBetween(random, 0, 12);
+				int year = ValuesGenerator.getRandomIntBetween(random, 2012, 2020);
+				
+				GregorianCalendar cal = new GregorianCalendar(year, month, day);
+				
+				CalDay cday = new CalDay(cal);
 
-				if (!appt.getValid())
+				if (!cday.isValid())
 					continue;
+				
+				Set<Appt> apptSet = new HashSet<Appt>();
+				
 				for (int i = 0; i < NUM_TESTS; i++) {
 
+					Appt appt = getRandomAppointment(random);
+					appt.setValid();
 					
+					cday.addAppt(appt);
+					
+					if (appt.getValid()) {
+						apptSet.add(appt);
+					}
+					
+					
+					assertEquals(cday.getSizeAppts(), apptSet.size());
 
 				}
 

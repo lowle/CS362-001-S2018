@@ -86,9 +86,9 @@ public class ApptRandomTest {
 				int startDay = ValuesGenerator.getRandomIntBetween(random, 0, 31);
 				int startMonth = ValuesGenerator.getRandomIntBetween(random, 0, 13);
 				int startYear = ValuesGenerator.getRandomIntBetween(random, -10, 10);
-				String title = "Birthday Party";
-				String description = "This is my birthday party.";
-				String emailAddress = "xyz@gmail.com";
+				String title = ValuesGenerator.getString(random);
+				String description = ValuesGenerator.getString(random);
+				String emailAddress = ValuesGenerator.getString(random);
 
 				// Construct a new Appointment object with the initial data
 				// Construct a new Appointment object with the initial data
@@ -123,13 +123,45 @@ public class ApptRandomTest {
 						
 					} else if (methodName.equals("setValid")) {
 						
+						//change around the hours and minutes and assert validation
+						
+						startHour = ValuesGenerator.getRandomIntBetween(random, -1, 24);
+						startMinute = ValuesGenerator.getRandomIntBetween(random, -1, 60);
+						startDay = ValuesGenerator.getRandomIntBetween(random, 0, 31);
+						startMonth = ValuesGenerator.getRandomIntBetween(random, 0, 13);
+						startYear = ValuesGenerator.getRandomIntBetween(random, -10, 10);
+						
+						appt.setStartHour(startHour);
+						appt.setStartMinute(startMinute);
+						appt.setStartDay(startDay);
+						appt.setStartMonth(startMonth);
+						appt.setStartYear(startYear);
+						
 						appt.setValid();
+						
+						boolean isValid = true;
+						if (startHour > 23 || startHour < 0 || startMinute > 59 || startMinute < 0
+								|| startMonth > 12 || startMonth < 1 || startYear <= 0) {
+							isValid = false;
+						}
+						//the following code will reveal a bug I introduced, uncommenting this will fail the tests
+						/*
+						if ((startMonth == 4 || startMonth == 6 || startMonth == 9 || startMonth == 11) && startDay > 30) {
+							isValid = false;
+						} else if ((startMonth == 2 && startDay > 28)) {
+							isValid = false;
+						} else if (startDay > 31) {
+							isValid = false;
+						}
+						*/
+						
+						assertEquals(appt.getValid(), isValid);
 						
 					} else if (methodName.equals("isOn")) {
 						
 						int day = ValuesGenerator.getRandomIntBetween(random, 1, 31);
 						int month = ValuesGenerator.getRandomIntBetween(random, 1, 12);
-						int year = ValuesGenerator.getRandomIntBetween(random, 2016, 2018);
+						int year = ValuesGenerator.getRandomIntBetween(random, -10, 10);
 						assertEquals(appt.isOn(day, month, year), day==appt.getStartDay() && month == appt.getStartMonth() && year ==appt.getStartYear());
 						
 					}

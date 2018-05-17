@@ -4,9 +4,12 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
@@ -19,18 +22,18 @@ public class CalDayRandomTest {
 	private static final long TestTimeout = 60 * 500 * 1; /* Timeout at 30 seconds */
 	private static final int NUM_TESTS = 100;
 	
-	public Appt getRandomAppointment(Random random) throws Throwable {
+	public Appt getRandomAppointment(Random random, int day, int month, int year) throws Throwable {
 		
 
 
 		int startHour = ValuesGenerator.getRandomIntBetween(random, -1, 24);
 		int startMinute = ValuesGenerator.getRandomIntBetween(random, -1, 60);
-		int startDay = ValuesGenerator.getRandomIntBetween(random, 0, 31);
-		int startMonth = ValuesGenerator.getRandomIntBetween(random, 0, 13);
-		int startYear = ValuesGenerator.getRandomIntBetween(random, -10, 10);
-		String title = "Birthday Party";
-		String description = "This is my birthday party.";
-		String emailAddress = "xyz@gmail.com";
+		int startDay = day;
+		int startMonth = month;
+		int startYear = year;
+		String title = ValuesGenerator.getString(random);
+		String description = ValuesGenerator.getString(random);
+		String emailAddress = ValuesGenerator.getString(random);
 
 		// Construct a new Appointment object with the initial data
 		// Construct a new Appointment object with the initial data
@@ -72,21 +75,28 @@ public class CalDayRandomTest {
 				if (!cday.isValid())
 					continue;
 				
-				Set<Appt> apptSet = new HashSet<Appt>();
+				List<Appt> apptList = new ArrayList<Appt>();
 				
 				for (int i = 0; i < NUM_TESTS; i++) {
 
-					Appt appt = getRandomAppointment(random);
+					Appt appt = getRandomAppointment(random, day, month, year);
 					appt.setValid();
 					
 					cday.addAppt(appt);
 					
 					if (appt.getValid()) {
-						apptSet.add(appt);
+						apptList.add(appt);
 					}
+					apptList.sort(new ApptComparator());
 					
+					assertEquals(cday.getSizeAppts(), apptList.size());
 					
-					assertEquals(cday.getSizeAppts(), apptSet.size());
+					List<Appt> calDayList = cday.getAppts();
+					
+					//check contents and order of elements inside apptlist
+					for (int j=0; j < apptList.size(); j++) {
+						assertEquals(calDayList.get(j), apptList.get(j));
+					}
 
 				}
 
@@ -100,6 +110,15 @@ public class CalDayRandomTest {
 		}
 
 		System.out.println("Done testing...");
+	}
+	
+	class ApptComparator implements Comparator<Appt> {
+
+		@Override
+		public int compare(Appt o1, Appt o2) {
+			return (o1.getStartHour() - o2.getStartHour());
+		}
+		
 	}
 
 }

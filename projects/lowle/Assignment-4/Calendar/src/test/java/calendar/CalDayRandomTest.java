@@ -68,9 +68,16 @@ public class CalDayRandomTest {
 				int month = ValuesGenerator.getRandomIntBetween(random, 0, 12);
 				int year = ValuesGenerator.getRandomIntBetween(random, 2012, 2020);
 				
-				GregorianCalendar cal = new GregorianCalendar(year, month, day);
+				CalDay cday;
 				
-				CalDay cday = new CalDay(cal);
+				int constructorNo = ValuesGenerator.getRandomIntBetween(random, 0, 1);
+				
+				if (constructorNo == 0) {
+					GregorianCalendar cal = new GregorianCalendar(year, month, day);
+					cday = new CalDay(cal);
+				} else {
+					cday = new CalDay();
+				}
 
 				if (!cday.isValid())
 					continue;
